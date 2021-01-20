@@ -1,0 +1,47 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "./src/**",
+    "./configs/**/",
+    "./api/**/"
+  ],
+  "browserslist": [
+    ">=1%",
+    "not ie <= 11",
+    "not dead"
+  ],
+  "scripts": {
+    "develop": "yarn --cwd=./configs/webpack develop",
+    "format:fix": "prettier --write . --ignore-path './.prettierignore'",
+    "format:check": "prettier --check . --ignore-path './.prettierignore'",
+    "lint:js": "eslint --fix './src/**/*.{ts,tsx}'",
+    "lint:css": "stylelint './src/**/*.{tsx,jsx}'",
+    "build": "yarn --cwd=./configs/webpack build",
+    "server": "npx http-server ./dist"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn format:check && yarn lint:css && yarn lint:js",
+      "post-commit": "git update-index --again"
+    }
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": "./configs/linters/.eslintrc.js"
+  },
+  "stylelint": {
+    "extends": "./configs/linters/.stylelintrc.js"
+  },
+  "babel": {
+    "extends": "./configs/babelrc.js"
+  },
+  "optionalDependencies": {
+    "husky": "4.2.5",
+    "lint-staged": "10.2.11",
+    "npm-check-updates": "7.0.3",
+    "prettier": "2.0.5",
+    "netlify-cli": "2.59.0"
+  }
+}
