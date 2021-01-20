@@ -61,6 +61,7 @@ module.exports = {
     "@typescript-eslint/no-namespace": 0,
     "@typescript-eslint/use-simple-attributes": 0,
     "@typescript-eslint/non-literal-require": 0,
+    "@typescript-eslint/no-floating-promises": 0,
 
     "one-var": 0,
     "spaced-comment": 0,
