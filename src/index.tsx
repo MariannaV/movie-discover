@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import CONSTANTS from "./consts";
-import {BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
-import {SearchPage} from "./pages/main";
-import {MovieCard} from "./pages/card";
-
+import { StoreMovies } from "./store/movies";
+import { SearchPage } from "./pages/main";
+import { MovieCard } from "./pages/card";
 
 if (CONSTANTS.isProd && "serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -19,30 +19,25 @@ if (CONSTANTS.isProd && "serviceWorker" in navigator) {
   });
 }
 
-///[{cardId, title}]
-//store.cards = { list: [cardId], map: { [cardId]: cardData } }
-
 function App() {
   return (
-      <Router>
-    <div>
-        <Link to='/'>Home</Link>
-        <Link to='/card'>card</Link>
-        <Switch>
+    <Router>
+      <StoreMovies.provider>
+        <div>
+          <Link to="/">Home</Link>
+          <Link to="/card">card</Link>
+          <Switch>
             <Route path="/card">
-                <MovieCard/>
+              <MovieCard />
             </Route>
             <Route path="/">
-                <SearchPage/>
+              <SearchPage />
             </Route>
-
-        </Switch>
-    </div>
+          </Switch>
+        </div>
+      </StoreMovies.provider>
     </Router>
-  )
+  );
 }
 
 ReactDOM.render(<App />, document.querySelector("#root"));
-
-
-
