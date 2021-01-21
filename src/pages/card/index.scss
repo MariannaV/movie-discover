@@ -1,0 +1,25 @@
+import "styles/variables.scss" .movieCard {
+  max-width: 80vw;
+  margin: 40px auto;
+}
+
+[class="ant-card ant-card-bordered"] {
+  max-width: 80vw;
+  margin: 40px auto;
+  padding: 20px;
+  @media (min-width: 1024px) {
+    display: flex;
+    justify-content: space-around;
+  }
+}
+[class="ant-card-cover"] {
+  @media (max-width: 1023px) {
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}
+[class="ant-card-body"] {
+  @media (min-width: 1024px) {
+    width: 50%;
+  }
+}
