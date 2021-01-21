@@ -17,9 +17,35 @@ export function MoviesPage(): React.ReactElement {
 
   const [sort, setSort] = React.useState<sortBy>(sortBy.popularity),
     movieIds = React.useMemo(() => {
-      const list = [...moviesData.list];
-
-      return list;
+      let list = [...moviesData.list];
+      switch (sort) {
+        case sortBy.popularity:
+        case sortBy.rating:
+          list = Object.values(moviesData.map).sort(function (
+            firstMovie: any,
+            secondMovie: any
+          ) {
+            let key =
+              sort === sortBy.popularity ? "popularity" : "vote_average";
+            return secondMovie[key] - firstMovie[key];
+          });
+          console.log("popularity SORT", list);
+          break;
+        case sortBy.novelty:
+          list = Object.values(moviesData.map).sort(function (
+            firstMovie: any,
+            secondMovie: any
+          ) {
+            return (
+                // @ts-ignore
+              new Date(secondMovie.release_date) - new Date(firstMovie.release_date)
+            );
+          });
+          break;
+        default:
+          return;
+      }
+      return list.map((movie: any) => movie.id);
     }, [moviesData.list, sort]);
 
   return (
@@ -117,6 +143,7 @@ function MoviesList(props: {
               {`Date of release: ${new Date(
                 movie.release_date
               ).toDateString()}`}
+              {`Rating: ${movie.vote_average}`}
             </List.Item>
           </Link>
         );
