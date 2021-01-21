@@ -1,9 +1,10 @@
+import "antd/dist/antd.css";
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import CONSTANTS from "./consts";
 import { StoreMovies } from "./store/movies";
-import { SearchPage } from "./pages/main";
+import { MoviesPage } from "./pages/main";
 import { MovieCard } from "./pages/card";
 
 if (CONSTANTS.isProd && "serviceWorker" in navigator) {
@@ -24,14 +25,12 @@ function App() {
     <Router>
       <StoreMovies.provider>
         <div>
-          <Link to="/">Home</Link>
-          <Link to="/card">card</Link>
           <Switch>
-            <Route path="/card">
+            <Route path="/card/:movieId">
               <MovieCard />
             </Route>
             <Route path="/">
-              <SearchPage />
+              <MoviesPage />
             </Route>
           </Switch>
         </div>
