@@ -21,14 +21,20 @@ export function reducer(
       return {
         ...store,
         loading: false,
-        list: action.payload.reduce((accumulator, currentMovie) => {
-          accumulator.push(currentMovie.id);
-          return accumulator;
-        }, store.list),
-        map: action.payload.reduce((accumulator, currentMovie) => {
-          accumulator[currentMovie.id] = currentMovie;
-          return accumulator;
-        }, store.map),
+        list: action.payload.reduce(
+          (accumulator, currentMovie) => {
+            accumulator.push(currentMovie.id);
+            return accumulator;
+          },
+          [...store.list]
+        ),
+        map: action.payload.reduce(
+          (accumulator, currentMovie) => {
+            accumulator[currentMovie.id] = currentMovie;
+            return accumulator;
+          },
+          { ...store.map }
+        ),
       };
     }
 
