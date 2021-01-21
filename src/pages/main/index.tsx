@@ -2,7 +2,9 @@ import React, { ReactElement } from "react";
 import { NMovies, StoreMovies } from "../../store/movies";
 import { Link } from "react-router-dom";
 import { MOVIE_API_KEY } from "../../consts";
-import { List, Avatar } from "antd";
+import { List } from "antd";
+import styles from "./index.scss";
+import { Header, sortBy } from "./header/index";
 
 export function MoviesPage(): React.ReactElement {
   useFetcherCommonData();
@@ -10,11 +12,22 @@ export function MoviesPage(): React.ReactElement {
   const moviesData: any = StoreMovies.useSelector(
     (store: NMovies.IStore) => store
   );
+
+  console.log("@@", moviesData);
+
+  const [sort, setSort] = React.useState<sortBy>(sortBy.popularity),
+    movieIds = React.useMemo(() => {
+      const list = [...moviesData.list];
+
+      return list;
+    }, [moviesData.list, sort]);
+
   return (
     <>
-      <div>
-        <h1>Movies page</h1>
-        <MoviesList moviesData={moviesData} />
+      <div className={styles.mainWrapper}>
+        <h1>Movie Discovery</h1>
+        <Header setSort={setSort} sortBy={sort} />
+        <MoviesList moviesList={movieIds} />
         {moviesData.loading ? (
           "Loading..."
         ) : (
@@ -58,9 +71,15 @@ function useFetcherCommonData() {
   return null;
 }
 
-function MoviesList(props: { moviesData: NMovies.IStore }): ReactElement {
-  const { moviesData } = props;
-  console.log("MD", moviesData.list);
+function MoviesList(props: {
+  moviesList: NMovies.IStore["list"];
+}): ReactElement {
+  const moviesData: any = StoreMovies.useSelector(
+    (store: NMovies.IStore) => store
+  );
+
+  const { moviesList } = props;
+  console.log("MD", moviesList);
 
   return (
     <List
@@ -72,7 +91,7 @@ function MoviesList(props: { moviesData: NMovies.IStore }): ReactElement {
         },
         pageSize: 3,
       }}
-      dataSource={moviesData.list}
+      dataSource={moviesList}
       footer={
         <div>
           <b>Movie discovery</b>
