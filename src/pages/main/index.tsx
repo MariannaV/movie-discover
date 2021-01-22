@@ -13,46 +13,56 @@ export function MoviesPage(): React.ReactElement {
     (store: NMovies.IStore) => store
   );
 
-  console.log("@@", moviesData);
-
   const [sort, setSort] = React.useState<sortBy>(sortBy.popularity),
+    [genresFilter, setGenresFilters] = React.useState<Array<
+      NMovies.IGenre["id"]
+    > | null>(null),
     movieIds = React.useMemo(() => {
       let list = [...moviesData.list];
+
+      if (genresFilter?.length)
+        list = list.filter((movieId) => {
+          const movieData = moviesData.map[movieId];
+          return movieData.genre_ids.some((genreId: number) =>
+            genresFilter.includes(genreId)
+          );
+        });
+
       switch (sort) {
         case sortBy.popularity:
         case sortBy.rating: {
-          list = Object.values(moviesData.map).sort(function (
-              firstMovie: any,
-              secondMovie: any
-          ) {
+          list.sort(function (firstMovieId: any, secondMovieId: any) {
             let key =
-                sort === sortBy.popularity ? "popularity" : "vote_average";
-            return secondMovie[key] - firstMovie[key];
+              sort === sortBy.popularity ? "popularity" : "vote_average";
+            return (
+              moviesData.map[secondMovieId][key] -
+              moviesData.map[firstMovieId][key]
+            );
           });
-          console.log("popularity SORT", list);
           break;
         }
         case sortBy.novelty: {
-          list = Object.values(moviesData.map).sort(function (
-              firstMovie: any,
-              secondMovie: any
-          ) {
+          list.sort(function (firstMovieId: any, secondMovieId: any) {
             // @ts-ignore
-            return new Date(secondMovie.release_date) - new Date(firstMovie.release_date)
+            return new Date(moviesData.map[secondMovieId].release_date) - new Date(moviesData.map[firstMovieId].release_date)
           });
           break;
         }
         default:
           break;
       }
-      return list.map((movie: any) => movie.id);
-    }, [moviesData.list, sort]);
+      return list;
+    }, [moviesData.list, genresFilter, sort]);
 
   return (
     <>
       <div className={styles.mainWrapper}>
         <h1>Movie Discovery</h1>
-        <Header setSort={setSort} sortBy={sort} />
+        <Header
+          setSort={setSort}
+          setGenresFilters={setGenresFilters}
+          sortBy={sort}
+        />
         {moviesData.loading ? (
           "Loading..."
         ) : (
@@ -113,8 +123,8 @@ function MoviesList(props: {
     (store: NMovies.IStore) => store
   );
 
+  const { genres } = moviesData;
   const { moviesList } = props;
-  console.log("Genres", moviesData);
 
   return (
     <List
@@ -122,7 +132,7 @@ function MoviesList(props: {
       size="small"
       pagination={{
         onChange: (page) => {
-          console.log(page);
+          console.log('page', page);
         },
         pageSize: 3,
       }}
@@ -148,11 +158,14 @@ function MoviesList(props: {
               }
             >
               <List.Item.Meta title={<a>{movie.title}</a>} />
-              {`Popularity: ${movie.popularity}`}
-              {`Date of release: ${new Date(
+              <p>{`Popularity: ${movie.popularity}`}</p>
+              <p>{`Date of release: ${new Date(
                 movie.release_date
-              ).toDateString()}`}
-              {`Rating: ${movie.vote_average}`}
+              ).toDateString()}`}</p>
+              <p>{`Rating: ${movie.vote_average}`}</p>
+              <p>{`Genres: ${movie.genre_ids.map(
+                (genreId: any) => genres[genreId]?.name
+              )}`}</p>
             </List.Item>
           </Link>
         );

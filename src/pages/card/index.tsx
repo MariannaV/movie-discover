@@ -1,16 +1,16 @@
 import React from "react";
-import { useParams } from "react-router-dom";
-import { Card } from "antd";
+import { Link, useParams } from "react-router-dom";
+import { Card, Button } from "antd";
 import styles from "./index.scss";
-
 import { NMovies, StoreMovies } from "../../store/movies";
 
 export function MovieCard(): React.ReactElement {
   let { movieId } = useParams();
-  console.log("MC ID", movieId);
+
   const moviesData: any = StoreMovies.useSelector(
     (store: NMovies.IStore) => store
   );
+  const { genres } = moviesData;
   const movie = moviesData.map[movieId];
   return (
     <div className={styles.movieCard}>
@@ -35,6 +35,12 @@ export function MovieCard(): React.ReactElement {
           ).toDateString()}`}</p>
           <p>{`Vote average: ${movie.vote_average}`}</p>
           <p>{`Vote count: ${movie.vote_count}`}</p>
+          <p>{`Genres: ${movie.genre_ids.map(
+            (movie: any) => genres[movie]?.name
+          )}`}</p>
+          <Link to="/">
+            <Button type="primary" children="Go to main page" />
+          </Link>
         </section>
       </Card>
     </div>

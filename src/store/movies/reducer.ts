@@ -13,7 +13,6 @@ export function reducer(
   store: NMovies.IStore,
   action: NMovies.IActions
 ): NMovies.IStore {
-  console.log("@@ reducer", action);
   switch (action.type) {
     case NMovies.ActionTypes.MOVIES_FETCH_START:
       return { ...store, loading: true };
