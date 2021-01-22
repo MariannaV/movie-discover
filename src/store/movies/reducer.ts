@@ -3,6 +3,7 @@ import { NMovies } from "./@types";
 export const initialState: NMovies.IStore = {
   list: [],
   map: {},
+  genres: {},
   loading: null,
   total_results: null,
 };
@@ -37,6 +38,19 @@ export function reducer(
         ),
       };
     }
+
+    case NMovies.ActionTypes.GENRES_FETCH_SUCCESSFUL:
+      return {
+        ...store,
+        loading: false,
+        genres: action.payload.reduce(
+          (accumulator: NMovies.IStore["genres"], currentGenre) => {
+            accumulator[currentGenre.id] = currentGenre;
+            return accumulator;
+          },
+          { ...store.genres }
+        ),
+      };
 
     default:
       return store;

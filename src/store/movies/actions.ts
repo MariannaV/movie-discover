@@ -11,4 +11,11 @@ export const actions = {
       type: NMovies.ActionTypes.MOVIES_FETCH_SUCCESSFUL,
       ...parameters,
     }),
+  genresFetchSuccessful: (dispatch: Dispatch<NMovies.IActions>) => (
+    parameters: Omit<NMovies.IGenresFetchSuccessful, "type">
+  ) =>
+    dispatch({
+      type: NMovies.ActionTypes.GENRES_FETCH_SUCCESSFUL,
+      ...parameters,
+    }),
 };

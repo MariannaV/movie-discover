@@ -20,30 +20,30 @@ export function MoviesPage(): React.ReactElement {
       let list = [...moviesData.list];
       switch (sort) {
         case sortBy.popularity:
-        case sortBy.rating:
+        case sortBy.rating: {
           list = Object.values(moviesData.map).sort(function (
-            firstMovie: any,
-            secondMovie: any
+              firstMovie: any,
+              secondMovie: any
           ) {
             let key =
-              sort === sortBy.popularity ? "popularity" : "vote_average";
+                sort === sortBy.popularity ? "popularity" : "vote_average";
             return secondMovie[key] - firstMovie[key];
           });
           console.log("popularity SORT", list);
           break;
-        case sortBy.novelty:
+        }
+        case sortBy.novelty: {
           list = Object.values(moviesData.map).sort(function (
-            firstMovie: any,
-            secondMovie: any
+              firstMovie: any,
+              secondMovie: any
           ) {
-            return (
-                // @ts-ignore
-              new Date(secondMovie.release_date) - new Date(firstMovie.release_date)
-            );
+            // @ts-ignore
+            return new Date(secondMovie.release_date) - new Date(firstMovie.release_date)
           });
           break;
+        }
         default:
-          return;
+          break;
       }
       return list.map((movie: any) => movie.id);
     }, [moviesData.list, sort]);
@@ -53,11 +53,11 @@ export function MoviesPage(): React.ReactElement {
       <div className={styles.mainWrapper}>
         <h1>Movie Discovery</h1>
         <Header setSort={setSort} sortBy={sort} />
-        <MoviesList moviesList={movieIds} />
         {moviesData.loading ? (
           "Loading..."
         ) : (
           <>
+            <MoviesList moviesList={movieIds!} />
             <p children={`All movies: ${moviesData.list.length}`} />
           </>
         )}
@@ -69,25 +69,34 @@ export function MoviesPage(): React.ReactElement {
 function useFetcherCommonData() {
   const { dispatch } = React.useContext(StoreMovies.context);
 
-  React.useEffect(function fetchData() {
-    fetchMoviesData();
-    console.log("store", StoreMovies);
+  React.useEffect(function fetchAllData() {
+    fetchData();
 
-    async function fetchMoviesData() {
+    async function fetchData() {
       try {
-        StoreMovies.API.moviesFetchStart(dispatch)();
-        const response = await fetch(
-          `https://api.themoviedb.org/3/discover/movie?api_key=${MOVIE_API_KEY}`
-        );
-        if (!response.ok) {
+        //TODO: enable loading
+        const [movies, genres] = await Promise.all([
+          fetch(
+            `https://api.themoviedb.org/3/discover/movie?api_key=${MOVIE_API_KEY}`
+          ),
+          fetch(
+            `https://api.themoviedb.org/3/genre/movie/list?api_key=${MOVIE_API_KEY}`
+          ),
+        ]);
+        if (!movies.ok || !genres.ok) {
           throw new Error("Something went wrong");
         }
 
-        const { results, ...rest } = await response.json();
+        const { results: moviesData, ...restMoviesData } = await movies.json();
         StoreMovies.API.moviesFetchSuccessful(dispatch)({
-          payload: results,
-          meta: rest,
+          payload: moviesData,
+          meta: restMoviesData,
         });
+
+        StoreMovies.API.genresFetchSuccessful(dispatch)({
+          payload: (await genres.json()).genres,
+        });
+        //TODO: disable loader
       } catch (error) {
         console.error(error);
       }
@@ -105,7 +114,7 @@ function MoviesList(props: {
   );
 
   const { moviesList } = props;
-  console.log("MD", moviesList);
+  console.log("Genres", moviesData);
 
   return (
     <List
