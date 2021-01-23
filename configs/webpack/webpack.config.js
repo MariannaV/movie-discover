@@ -20,6 +20,7 @@ module.exports = (env, argv) => ({
     filename: `${assetsPath}/js/[name]${isProd ? ".[chunkhash]" : ""}.js`,
     chunkFilename: `${assetsPath}/js/[name]${isProd ? ".[chunkhash]" : ""}.js`,
     path: distPath,
+    publicPath: initialPath,
   },
 
   devServer: {
