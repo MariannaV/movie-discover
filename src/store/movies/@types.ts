@@ -38,11 +38,13 @@ export namespace NMovies {
   export type IActions =
     | IMoviesFetchStart
     | IMoviesFetchSuccessful
+    | IMovieFetchSuccessful
     | IGenresFetchSuccessful;
 
   export enum ActionTypes {
     MOVIES_FETCH_START,
     MOVIES_FETCH_SUCCESSFUL,
+    MOVIE_FETCH_SUCCESSFUL,
     GENRES_FETCH_SUCCESSFUL,
   }
 
@@ -59,6 +61,11 @@ export namespace NMovies {
       total_pages: number;
       total_results: IStore["total_results"];
     };
+  }
+  export interface IMovieFetchSuccessful {
+    type: ActionTypes.MOVIE_FETCH_SUCCESSFUL;
+    payload: any;
+    meta: any;
   }
   export interface IGenresFetchSuccessful {
     type: ActionTypes.GENRES_FETCH_SUCCESSFUL;

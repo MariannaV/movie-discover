@@ -44,7 +44,7 @@ export function MoviesPage(): React.ReactElement {
         case sortBy.novelty: {
           list.sort(function (firstMovieId: any, secondMovieId: any) {
             // @ts-ignore
-            return new Date(moviesData.map[secondMovieId].release_date) - new Date(moviesData.map[firstMovieId].release_date)
+            return (new Date(moviesData.map[secondMovieId].release_date) - new Date(moviesData.map[firstMovieId].release_date));
           });
           break;
         }
@@ -126,6 +126,8 @@ function MoviesList(props: {
 
   const { genres } = moviesData;
   const { moviesList } = props;
+
+  console.log(moviesData);
 
   return (
     <List

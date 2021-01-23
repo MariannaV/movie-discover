@@ -41,6 +41,17 @@ export function reducer(
       };
     }
 
+    case NMovies.ActionTypes.MOVIE_FETCH_SUCCESSFUL:
+      const { movieId } = action.meta;
+
+      return {
+        ...store,
+        map: {
+          ...store.map,
+          [movieId]: action.payload,
+        },
+      };
+
     case NMovies.ActionTypes.GENRES_FETCH_SUCCESSFUL:
       return {
         ...store,

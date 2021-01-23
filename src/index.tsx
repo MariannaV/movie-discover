@@ -1,7 +1,7 @@
 import "antd/dist/antd.css";
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CONSTANTS from "./consts";
 import { StoreMovies } from "./store/movies";
 import { MoviesPage } from "./pages/main";
