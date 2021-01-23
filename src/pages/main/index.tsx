@@ -68,7 +68,7 @@ export function MoviesPage(): React.ReactElement {
         ) : (
           <>
             <MoviesList moviesList={movieIds!} />
-            <p children={`All movies: ${moviesData.list.length}`} />
+            <p children={`All movies: ${moviesData.total_results}`} />
           </>
         )}
       </div>
@@ -122,6 +122,7 @@ function MoviesList(props: {
   const moviesData: any = StoreMovies.useSelector(
     (store: NMovies.IStore) => store
   );
+  const { dispatch } = React.useContext(StoreMovies.context);
 
   const { genres } = moviesData;
   const { moviesList } = props;
@@ -131,10 +132,39 @@ function MoviesList(props: {
       itemLayout="vertical"
       size="small"
       pagination={{
-        onChange: (page) => {
-          console.log('page', page);
+        total: moviesData.total_results,
+        pageSize: 20,
+        showSizeChanger: false,
+        onChange: async (page) => {
+          try {
+            const pageSize = 20;
+
+            //TODO: enable loading
+            const movies = await fetch(
+              `https://api.themoviedb.org/3/discover/movie?api_key=${MOVIE_API_KEY}&page=${page}`
+            );
+
+            if (!movies.ok) {
+              throw new Error("Something went wrong");
+            }
+
+            const {
+              results: moviesData,
+              ...restMoviesData
+            } = await movies.json();
+            StoreMovies.API.moviesFetchSuccessful(dispatch)({
+              payload: moviesData,
+              meta: {
+                ...restMoviesData,
+                page,
+                pageSize,
+              },
+            });
+            //TODO: disable loader
+          } catch (error) {
+            console.error(error);
+          }
         },
-        pageSize: 3,
       }}
       dataSource={moviesList}
       footer={

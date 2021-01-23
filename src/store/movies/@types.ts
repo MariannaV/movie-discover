@@ -27,6 +27,7 @@ export namespace NMovies {
     // genres: Record<any, any>;
     loading: boolean | null;
     total_results: null | number;
+    total_pages: null | number;
   }
 
   export interface IStoreContext {
@@ -54,6 +55,7 @@ export namespace NMovies {
     payload: Array<IMovie>;
     meta: {
       page: number;
+      pageSize?: number;
       total_pages: number;
       total_results: IStore["total_results"];
     };

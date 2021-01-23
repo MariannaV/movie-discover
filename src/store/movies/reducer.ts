@@ -6,6 +6,7 @@ export const initialState: NMovies.IStore = {
   genres: {},
   loading: null,
   total_results: null,
+  total_pages: null,
 };
 
 //TODO: add Immer
@@ -18,16 +19,16 @@ export function reducer(
       return { ...store, loading: true };
 
     case NMovies.ActionTypes.MOVIES_FETCH_SUCCESSFUL: {
+      const { page, pageSize } = action.meta;
+
       return {
         ...store,
         loading: false,
-        list: action.payload.reduce(
-          (accumulator, currentMovie) => {
-            accumulator.push(currentMovie.id);
-            return accumulator;
-          },
-          [...store.list]
-        ),
+        list: [
+          ...store.list.slice(0, (page - 1) * pageSize!),
+          ...action.payload.map((currentMovie) => currentMovie.id),
+          ...store.list.slice(page * pageSize!),
+        ],
         map: action.payload.reduce(
           (accumulator, currentMovie) => {
             accumulator[currentMovie.id] = currentMovie;
@@ -35,6 +36,8 @@ export function reducer(
           },
           { ...store.map }
         ),
+        total_results: action.meta.total_results,
+        total_pages: action.meta.total_pages,
       };
     }
 
