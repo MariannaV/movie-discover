@@ -1,3 +1,4 @@
+import produce from "immer";
 import { NMovies } from "./@types";
 
 export const initialState: NMovies.IStore = {
@@ -9,63 +10,58 @@ export const initialState: NMovies.IStore = {
   total_pages: null,
 };
 
-//TODO: add Immer
-export function reducer(
-  store: NMovies.IStore,
-  action: NMovies.IActions
-): NMovies.IStore {
-  switch (action.type) {
-    case NMovies.ActionTypes.MOVIES_FETCH_START:
-      return { ...store, loading: true };
+export const reducer = produce(
+  (store: NMovies.IStore, action: NMovies.IActions) => {
+    switch (action.type) {
+      case NMovies.ActionTypes.LOADING_START:
+        return { ...store, loading: true };
+      case NMovies.ActionTypes.LOADING_END:
+        return { ...store, loading: false };
 
-    case NMovies.ActionTypes.MOVIES_FETCH_SUCCESSFUL: {
-      const { page, pageSize } = action.meta;
+      case NMovies.ActionTypes.MOVIES_FETCH_SUCCESSFUL: {
+        const { page, pageSize, total_results } = action.meta;
 
-      return {
-        ...store,
-        loading: false,
-        list: [
-          ...store.list.slice(0, (page - 1) * pageSize!),
-          ...action.payload.map((currentMovie) => currentMovie.id),
-          ...store.list.slice(page * pageSize!),
-        ],
-        map: action.payload.reduce(
-          (accumulator, currentMovie) => {
-            accumulator[currentMovie.id] = currentMovie;
-            return accumulator;
+        store.total_results = total_results;
+        store.total_pages = action.meta.total_pages;
+
+        if (!store.list.length)
+          store.list = Array(total_results).fill(0) as Array<number>;
+
+        const indexStart = (page - 1) * pageSize;
+        for (let index = 0; index < action.payload.length; index++)
+          store.list[indexStart + index] = action.payload[index].id;
+
+        action.payload.forEach((currentMovie) => {
+          store.map[currentMovie.id] = currentMovie;
+        });
+        break;
+      }
+
+      case NMovies.ActionTypes.MOVIE_FETCH_SUCCESSFUL:
+        const { movieId } = action.meta;
+
+        return {
+          ...store,
+          map: {
+            ...store.map,
+            [movieId]: action.payload,
           },
-          { ...store.map }
-        ),
-        total_results: action.meta.total_results,
-        total_pages: action.meta.total_pages,
-      };
+        };
+
+      case NMovies.ActionTypes.GENRES_FETCH_SUCCESSFUL:
+        return {
+          ...store,
+          genres: action.payload.reduce(
+            (accumulator: NMovies.IStore["genres"], currentGenre) => {
+              accumulator[currentGenre.id] = currentGenre;
+              return accumulator;
+            },
+            { ...store.genres }
+          ),
+        };
     }
 
-    case NMovies.ActionTypes.MOVIE_FETCH_SUCCESSFUL:
-      const { movieId } = action.meta;
-
-      return {
-        ...store,
-        map: {
-          ...store.map,
-          [movieId]: action.payload,
-        },
-      };
-
-    case NMovies.ActionTypes.GENRES_FETCH_SUCCESSFUL:
-      return {
-        ...store,
-        loading: false,
-        genres: action.payload.reduce(
-          (accumulator: NMovies.IStore["genres"], currentGenre) => {
-            accumulator[currentGenre.id] = currentGenre;
-            return accumulator;
-          },
-          { ...store.genres }
-        ),
-      };
-
-    default:
-      return store;
-  }
-}
+    return store;
+  },
+  initialState
+);

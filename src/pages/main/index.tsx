@@ -6,6 +6,8 @@ import { List } from "antd";
 import styles from "./index.scss";
 import { Header, sortBy } from "./header/index";
 
+const pageSize = 20;
+
 export function MoviesPage(): React.ReactElement {
   const { dispatch } = React.useContext(StoreMovies.context);
   const moviesData: any = StoreMovies.useSelector(
@@ -34,10 +36,11 @@ export function MoviesPage(): React.ReactElement {
 
       if (genresFilter?.length)
         list = list.filter((movieId) => {
+          if (!movieId) return false;
           const movieData = moviesData.map[movieId];
-          return movieData.genre_ids.some((genreId: number) =>
-            genresFilter.includes(genreId)
-          );
+          return (
+            movieData.genre_ids ?? movieData.genres
+          ).some((genreId: number) => genresFilter.includes(genreId));
         });
 
       return list;
@@ -49,7 +52,7 @@ export function MoviesPage(): React.ReactElement {
 
       async function fetchData() {
         try {
-          //LOADING_START
+          StoreMovies.API.loadingStart(dispatch)();
           const [movies, genres] = await Promise.all([
             fetch(
               `https://api.themoviedb.org/3/discover/movie?api_key=${MOVIE_API_KEY}&sort_by=${sort_by}`
@@ -68,7 +71,11 @@ export function MoviesPage(): React.ReactElement {
           } = await movies.json();
           StoreMovies.API.moviesFetchSuccessful(dispatch)({
             payload: moviesData,
-            meta: restMoviesData,
+            meta: {
+              ...restMoviesData,
+              page: 1,
+              pageSize,
+            },
           });
 
           StoreMovies.API.genresFetchSuccessful(dispatch)({
@@ -77,7 +84,7 @@ export function MoviesPage(): React.ReactElement {
         } catch (error) {
           console.error(error);
         } finally {
-          // LOADING_END
+          StoreMovies.API.loadingEnd(dispatch)();
         }
       }
     },
@@ -85,24 +92,15 @@ export function MoviesPage(): React.ReactElement {
   );
 
   return (
-    <>
-      <div className={styles.mainWrapper}>
-        <h1>Movie Discovery</h1>
-        <Header
-          setSort={setSort}
-          setGenresFilters={setGenresFilters}
-          sortBy={sort}
-        />
-        {moviesData.loading ? (
-          "Loading..."
-        ) : (
-          <>
-            <MoviesList moviesList={movieIds!} sort_by={sort_by} />
-            <p children={`All movies: ${moviesData.total_results}`} />
-          </>
-        )}
-      </div>
-    </>
+    <div className={styles.mainWrapper}>
+      <h1>Movie Discovery</h1>
+      <Header
+        setSort={setSort}
+        setGenresFilters={setGenresFilters}
+        sortBy={sort}
+      />
+      <MoviesList moviesList={movieIds} sort_by={sort_by} />
+    </div>
   );
 }
 
@@ -121,9 +119,7 @@ function MoviesList(props: {
   const onPaginationChange = React.useCallback(
     async (page) => {
       try {
-        const pageSize = 20;
-
-        //TODO: enable loading
+        StoreMovies.API.loadingStart(dispatch)();
         const movies = await fetch(
           `https://api.themoviedb.org/3/discover/movie?api_key=${MOVIE_API_KEY}&page=${page}&sort_by=${props.sort_by}`
         );
@@ -141,7 +137,7 @@ function MoviesList(props: {
             pageSize,
           },
         });
-        //TODO: disable loader
+        StoreMovies.API.loadingEnd(dispatch)();
       } catch (error) {
         console.error(error);
       }
@@ -149,49 +145,54 @@ function MoviesList(props: {
     [props.sort_by]
   );
 
+  const onRenderItem = React.useCallback(
+    (movieId) => {
+      if (!movieId) return null;
+      const movie = moviesData.map[movieId];
+      return (
+        <Link to={`/card/${movieId}`} key={movieId}>
+          <List.Item
+            extra={
+              <img
+                width={120}
+                height={200}
+                alt="movie poster"
+                src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2${movie.poster_path}`}
+              />
+            }
+          >
+            <List.Item.Meta title={movie.title} />
+            <p>{`Popularity: ${movie.popularity}`}</p>
+            {(() => {
+              const dateOfRelease = new Date(movie.release_date).toDateString();
+              if (dateOfRelease === "Invalid Date") return null;
+              return <p children={`Date of release: ${dateOfRelease}`} />;
+            })()}
+
+            <p>{`Rating: ${movie.vote_average}`}</p>
+            <p>{`Genres: ${(movie.genre_ids ?? movie.genres).map(
+              (genreId: any) => genres[genreId]?.name
+            )}`}</p>
+          </List.Item>
+        </Link>
+      );
+    },
+    [moviesData.map, genres]
+  );
+
   return (
     <List
       itemLayout="vertical"
       size="small"
       pagination={{
-        total: moviesData.total_results,
+        total: moviesList.length,
         pageSize: 20,
         showSizeChanger: false,
         onChange: onPaginationChange,
       }}
+      loading={moviesData.loading}
       dataSource={moviesList}
-      renderItem={(movieId) => {
-        const movie = moviesData.map[movieId];
-        return (
-          <Link to={`/card/${movieId}`} key={movieId}>
-            <List.Item
-              extra={
-                <img
-                  width={120}
-                  height={200}
-                  alt="movie poster"
-                  src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2${movie.poster_path}`}
-                />
-              }
-            >
-              <List.Item.Meta title={movie.title} />
-              <p>{`Popularity: ${movie.popularity}`}</p>
-              {(() => {
-                const dateOfRelease = new Date(
-                  movie.release_date
-                ).toDateString();
-                if (dateOfRelease === "Invalid Date") return null;
-                return <p children={`Date of release: ${dateOfRelease}`} />;
-              })()}
-
-              <p>{`Rating: ${movie.vote_average}`}</p>
-              <p>{`Genres: ${movie.genre_ids.map(
-                (genreId: any) => genres[genreId]?.name
-              )}`}</p>
-            </List.Item>
-          </Link>
-        );
-      }}
+      renderItem={onRenderItem}
     />
   );
 }

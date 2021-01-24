@@ -32,7 +32,7 @@ export function Header(props: {
 
   const options: Array<any> = [];
 
-  for (let genreID in genres) {
+  for (const genreID in genres) {
     options.push(genres[genreID].name);
   }
 

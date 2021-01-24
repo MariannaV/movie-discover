@@ -15,6 +15,7 @@ export namespace NMovies {
     vote_average: number;
     vote_count: number;
   }
+
   export interface IGenre {
     id: number;
     name: string;
@@ -24,7 +25,6 @@ export namespace NMovies {
     list: Array<IMovie["id"]>;
     map: Record<IMovie["id"], IMovie & { loading?: boolean }>;
     genres: Record<IGenre["id"], IGenre>;
-    // genres: Record<any, any>;
     loading: boolean | null;
     total_results: null | number;
     total_pages: null | number;
@@ -36,20 +36,26 @@ export namespace NMovies {
   }
 
   export type IActions =
-    | IMoviesFetchStart
+    | ILoadingStart
+    | ILoadingEnd
     | IMoviesFetchSuccessful
     | IMovieFetchSuccessful
     | IGenresFetchSuccessful;
 
   export enum ActionTypes {
-    MOVIES_FETCH_START,
+    LOADING_START,
+    LOADING_END,
     MOVIES_FETCH_SUCCESSFUL,
     MOVIE_FETCH_SUCCESSFUL,
     GENRES_FETCH_SUCCESSFUL,
   }
 
-  export interface IMoviesFetchStart {
-    type: ActionTypes.MOVIES_FETCH_START;
+  export interface ILoadingStart {
+    type: ActionTypes.LOADING_START;
+  }
+
+  export interface ILoadingEnd {
+    type: ActionTypes.LOADING_END;
   }
 
   export interface IMoviesFetchSuccessful {
@@ -57,16 +63,18 @@ export namespace NMovies {
     payload: Array<IMovie>;
     meta: {
       page: number;
-      pageSize?: number;
+      pageSize: number;
       total_pages: number;
       total_results: IStore["total_results"];
     };
   }
+
   export interface IMovieFetchSuccessful {
     type: ActionTypes.MOVIE_FETCH_SUCCESSFUL;
     payload: any;
     meta: any;
   }
+
   export interface IGenresFetchSuccessful {
     type: ActionTypes.GENRES_FETCH_SUCCESSFUL;
     payload: Array<IGenre>;
