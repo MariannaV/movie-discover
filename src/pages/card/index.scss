@@ -1,4 +1,4 @@
-import "styles/variables.scss" .movieCard {
+import "./../styles/variables.scss" .movieCard {
   max-width: 80vw;
   margin: 40px auto;
 }
@@ -22,4 +22,8 @@ import "styles/variables.scss" .movieCard {
   @media (min-width: 1024px) {
     width: 50%;
   }
+}
+
+img{
+  object-fit: contain;
 }
