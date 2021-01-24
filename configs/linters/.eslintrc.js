@@ -9,7 +9,7 @@ module.exports = {
     createDefaultProgram: true,
     ecmaVersion: 2020,
     ecmaFeatures: {
-      jsx: true,
+      jsx: true
     },
   },
   env: {
@@ -29,7 +29,7 @@ module.exports = {
     "eslint:recommended",
     // "plugin:@typescript-eslint/recommended",
     // "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:import/errors",
+    // "plugin:import/errors",
     "plugin:import/warnings",
     // "plugin:sonarjs/recommended",
     // "plugin:unicorn/recommended",
@@ -42,12 +42,12 @@ module.exports = {
     // "prettier/standard",
   ],
   rules: {
-    "@typescript-eslint/tslint/config": [
-      "error",
-      {
-        lintFile: `${root}/configs/linters/tslint.json`,
-      },
-    ],
+    // "@typescript-eslint/tslint/config": [
+    //   "error",
+    //   {
+    //     lintFile: `${root}/configs/linters/tslint.json`,
+    //   },
+    // ],
     "@typescript-eslint/ban-ts-comment": 0,
     "@typescript-eslint/restrict-template-expressions": 0,
     "@typescript-eslint/no-var-requires": 1,
