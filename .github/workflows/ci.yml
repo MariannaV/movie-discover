@@ -1,0 +1,17 @@
+name: CI
+on: [pull_request]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Installing Dependencies
+        run: yarn
+
+      - name: Building application
+        run: yarn build
+
+      - name: Deploying application
+        run: yarn netlify deploy -s ${{ secrets.NETLIFY_SITE_ID }} --auth ${{ secrets.NETLIFY_ACCESS_TOKEN }}

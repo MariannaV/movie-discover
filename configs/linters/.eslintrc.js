@@ -9,7 +9,7 @@ module.exports = {
     createDefaultProgram: true,
     ecmaVersion: 2020,
     ecmaFeatures: {
-      jsx: true,
+      jsx: true
     },
   },
   env: {
@@ -27,27 +27,27 @@ module.exports = {
   ],
   extends: [
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:import/errors",
+    // "plugin:@typescript-eslint/recommended",
+    // "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    // "plugin:import/errors",
     "plugin:import/warnings",
-    "plugin:sonarjs/recommended",
-    "plugin:unicorn/recommended",
-    "esnext",
-    "standard",
-    "standard-react",
+    // "plugin:sonarjs/recommended",
+    // "plugin:unicorn/recommended",
+    // "esnext",
+    // "standard",
+    // "standard-react",
     "prettier",
-    "prettier/@typescript-eslint",
+    // "prettier/@typescript-eslint",
     "prettier/react",
-    "prettier/standard",
+    // "prettier/standard",
   ],
   rules: {
-    "@typescript-eslint/tslint/config": [
-      "error",
-      {
-        lintFile: `${root}/configs/linters/tslint.json`,
-      },
-    ],
+    // "@typescript-eslint/tslint/config": [
+    //   "error",
+    //   {
+    //     lintFile: `${root}/configs/linters/tslint.json`,
+    //   },
+    // ],
     "@typescript-eslint/ban-ts-comment": 0,
     "@typescript-eslint/restrict-template-expressions": 0,
     "@typescript-eslint/no-var-requires": 1,
@@ -61,6 +61,7 @@ module.exports = {
     "@typescript-eslint/no-namespace": 0,
     "@typescript-eslint/use-simple-attributes": 0,
     "@typescript-eslint/non-literal-require": 0,
+    "@typescript-eslint/no-floating-promises": 0,
 
     "one-var": 0,
     "spaced-comment": 0,

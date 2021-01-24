@@ -1,0 +1,4 @@
+$desktop: 1024px;
+
+@custom-media --min-tablet (width >= $tablet);
+@custom-media --max-tablet (width < $tablet);

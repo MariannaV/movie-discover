@@ -20,6 +20,7 @@ module.exports = (env, argv) => ({
     filename: `${assetsPath}/js/[name]${isProd ? ".[chunkhash]" : ""}.js`,
     chunkFilename: `${assetsPath}/js/[name]${isProd ? ".[chunkhash]" : ""}.js`,
     path: distPath,
+    publicPath: initialPath,
   },
 
   devServer: {
@@ -54,7 +55,7 @@ module.exports = (env, argv) => ({
 
   plugins: [
     new (require("clean-webpack-plugin").CleanWebpackPlugin)(),
-    new (require("fork-ts-checker-webpack-plugin"))({
+    /*new (require("fork-ts-checker-webpack-plugin"))({
       typescript: {
         context: root,
         configFile: `${root}/tsconfig.json`,
@@ -65,10 +66,10 @@ module.exports = (env, argv) => ({
         },
       },
       eslint: {
-        files: `${root}/src/**/*.{ts,tsx,js,jsx}`,
+        files: `${root}/src/!**!/!*.{ts,tsx,js,jsx}`,
       },
       async: isDev,
-    }),
+    }),*/
 
     new (require("html-webpack-plugin"))({
       template: `${root}/src/index.html`,
