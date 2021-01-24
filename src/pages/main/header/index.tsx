@@ -51,6 +51,7 @@ export function Header(props: {
                 value={genre.id}
                 style={{ lineHeight: "32px" }}
                 children={genre.name}
+                key={genre.id}
               />
             ))}
             {/*{options.map(genre => <Checkbox value={genre} style={{lineHeight: '32px'}} children={genre}/>)}*/}
