@@ -48,7 +48,7 @@ export function MovieCard() {
           cover={
             <img
               alt="movie poster"
-              src={`https://www.themoviedb.org/t/p/w300_and_h450_bestv2${movie.poster_path}`}
+              src={ (movie.poster_path === null) ? require(`assets/img/no-image.png`).default : `https://www.themoviedb.org/t/p/w300_and_h450_bestv2${movie.poster_path}`}
             />
           }
         >
