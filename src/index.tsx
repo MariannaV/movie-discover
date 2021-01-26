@@ -6,6 +6,7 @@ import CONSTANTS from "./consts";
 import { StoreMovies } from "./store/movies";
 import { MoviesPage } from "./pages/main";
 import { MovieCard } from "./pages/card";
+import { routes } from "./consts";
 
 if (CONSTANTS.isProd && "serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -26,10 +27,10 @@ function App() {
       <StoreMovies.provider>
         <div>
           <Switch>
-            <Route path="/card/:movieId">
+            <Route path={routes.card}>
               <MovieCard />
             </Route>
-            <Route path="/">
+            <Route path={routes.home}>
               <MoviesPage />
             </Route>
           </Switch>

@@ -1,5 +1,6 @@
 export const routes = {
   home: "/",
+  card: "/card/:movieId",
 };
 
 export default {
