@@ -65,10 +65,6 @@ export function Header(props: {
             children="OK"
           />
         </Form.Item>
-        {/*  <Menu>
-      <Checkbox.Group options={options} defaultValue={Array.prototype} />
-      <Button type={"primary"} size={"small"} onClick={toggleFilter} children="OK"/>
-    </Menu>*/}
       </Form>
     ),
     [options]
