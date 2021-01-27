@@ -25,16 +25,10 @@ function App() {
   return (
     <Router>
       <StoreMovies.provider>
-        <div>
-          <Switch>
-            <Route path={routes.card}>
-              <MovieCard />
-            </Route>
-            <Route path={routes.home}>
-              <MoviesPage />
-            </Route>
-          </Switch>
-        </div>
+        <Switch>
+          <Route path={routes.card} children={<MovieCard />} />
+          <Route path={routes.home} children={<MoviesPage />} />
+        </Switch>
       </StoreMovies.provider>
     </Router>
   );
