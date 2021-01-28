@@ -9,7 +9,7 @@ module.exports = {
     createDefaultProgram: true,
     ecmaVersion: 2020,
     ecmaFeatures: {
-      jsx: true
+      jsx: true,
     },
   },
   env: {

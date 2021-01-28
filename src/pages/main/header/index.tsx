@@ -26,9 +26,9 @@ export function Header(props: {
   const { genres } = moviesData;
 
   const [isOpen, setOpen] = React.useState(false);
-  const toggleFilter = () => {
+  const toggleFilter = React.useCallback(() => {
     setOpen((isOpen) => !isOpen);
-  };
+  }, []);
 
   const options: Array<any> = [];
 
@@ -36,12 +36,12 @@ export function Header(props: {
     options.push(genres[genreID].name);
   }
 
-  const onFinish = (formValues: any) => {
+  const onFinish = React.useCallback((formValues: any) => {
     toggleFilter();
     props.setGenresFilters(formValues.genres);
-  };
+  }, []);
 
-  const menu = React.useMemo(
+  const filterOptions = React.useMemo(
     () => (
       <Form name="GenresFilter" onFinish={onFinish}>
         <Form.Item name="genres">
@@ -54,7 +54,6 @@ export function Header(props: {
                 key={genre.id}
               />
             ))}
-            {/*{options.map(genre => <Checkbox value={genre} style={{lineHeight: '32px'}} children={genre}/>)}*/}
           </Checkbox.Group>
         </Form.Item>
         <Form.Item>
@@ -65,10 +64,6 @@ export function Header(props: {
             children="OK"
           />
         </Form.Item>
-        {/*  <Menu>
-      <Checkbox.Group options={options} defaultValue={Array.prototype} />
-      <Button type={"primary"} size={"small"} onClick={toggleFilter} children="OK"/>
-    </Menu>*/}
       </Form>
     ),
     [options]
@@ -103,7 +98,7 @@ export function Header(props: {
             " "
           )}
         >
-          {menu}
+          {filterOptions}
         </div>
       </div>
     </div>

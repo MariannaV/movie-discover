@@ -32,7 +32,7 @@ export namespace NMovies {
 
   export interface IStoreContext {
     store: IStore;
-    dispatch: React.Dispatch<any>;
+    dispatch: React.Dispatch<IActions>;
   }
 
   export type IActions =

@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { Card, Button, Spin } from "antd";
 import styles from "./index.scss";
 import { NMovies, StoreMovies } from "../../store/movies";
+import { routes } from "../../consts";
 
 export function MovieCard() {
   const { movieId } = useParams();
@@ -48,7 +49,11 @@ export function MovieCard() {
           cover={
             <img
               alt="movie poster"
-              src={ (movie.poster_path === null) ? require(`assets/img/no-image.png`).default : `https://www.themoviedb.org/t/p/w300_and_h450_bestv2${movie.poster_path}`}
+              src={
+                movie.poster_path === null
+                  ? require(`assets/img/no-image.png`).default
+                  : `https://www.themoviedb.org/t/p/w300_and_h450_bestv2${movie.poster_path}`
+              }
             />
           }
         >
@@ -64,9 +69,10 @@ export function MovieCard() {
             ).toDateString()}`}</p>
             <p>{`Vote average: ${movie.vote_average}`}</p>
             <p>{`Vote count: ${movie.vote_count}`}</p>
-            <Link to="/">
-              <Button type="primary" children="Go to main page" />
-            </Link>
+            <Link
+              to={routes.home}
+              children={<Button type="primary" children="Go to main page" />}
+            />
           </section>
         </Card>
       )}
