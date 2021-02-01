@@ -120,16 +120,22 @@ export function Authorization(): React.ReactElement {
       )}
 
       {authStep === AuthSteps.isRequestUserId && (
-        <div>
-          <Modal
-            title="Approval Request"
-            visible={isModalVisible}
-            onOk={onApproveAuthRequest}
-          >
-            <p>You must approve request on https://www.themoviedb.org</p>
-            <p>Then press OK</p>
-          </Modal>
-        </div>
+        <Modal
+          visible={isModalVisible}
+          title="Approval Request"
+          onOk={onApproveAuthRequest}
+          footer={
+            <Button key="submit" type="primary" onClick={onApproveAuthRequest}>
+              Okay
+            </Button>
+          }
+          children={
+            <p>
+              For authorization you need to approve request on themoviedb.org
+              and press "Okay"
+            </p>
+          }
+        />
       )}
     </>
   );
