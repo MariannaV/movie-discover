@@ -1,5 +1,6 @@
 import { NMovies } from "./@types";
 import { Dispatch } from "react";
+import { LS_APP_ID } from "./../../consts/index";
 
 export const actions = {
   loadingStart: (dispatch: Dispatch<NMovies.IActions>) => () =>
@@ -33,4 +34,27 @@ export const actions = {
       type: NMovies.ActionTypes.GENRES_FETCH_SUCCESSFUL,
       ...parameters,
     }),
+
+  authorizationFetchSuccessful: (dispatch: Dispatch<NMovies.IActions>) => (
+    parameters: Omit<NMovies.IAuthorizationFetchSuccessful, "type">
+  ) => {
+    dispatch({
+      type: NMovies.ActionTypes.AUTHORIZATION_FETCH_SUCCESSFUL,
+      ...parameters,
+    });
+
+    const currentLocalStorageData = JSON.parse(
+      localStorage.getItem(LS_APP_ID)!
+    );
+    localStorage.setItem(
+      LS_APP_ID,
+      JSON.stringify({
+        ...(currentLocalStorageData ? currentLocalStorageData : {}),
+        authData: {
+          ...currentLocalStorageData?.authData,
+          ...parameters.payload,
+        },
+      })
+    );
+  },
 };

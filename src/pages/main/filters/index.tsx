@@ -10,7 +10,7 @@ export enum sortBy {
   rating = "rating",
 }
 
-export function Header(props: {
+export function ViewSettings(props: {
   sortBy: sortBy;
   setSort: React.Dispatch<sortBy>;
   setGenresFilters: React.Dispatch<Array<NMovies.IGenre["id"]>>;
@@ -70,7 +70,7 @@ export function Header(props: {
   );
 
   return (
-    <div className={styles.header}>
+    <div className={styles.viewSettings}>
       <div>
         <div>Sort by:</div>
         <Radio.Group
