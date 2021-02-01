@@ -28,6 +28,12 @@ export namespace NMovies {
     loading: boolean | null;
     total_results: null | number;
     total_pages: null | number;
+    authData: IAuthData;
+  }
+  export interface IAuthData {
+    requestToken: null | string;
+    sessionId: null | string;
+    userId: null | number;
   }
 
   export interface IStoreContext {
@@ -40,7 +46,8 @@ export namespace NMovies {
     | ILoadingEnd
     | IMoviesFetchSuccessful
     | IMovieFetchSuccessful
-    | IGenresFetchSuccessful;
+    | IGenresFetchSuccessful
+    | IAuthorizationFetchSuccessful;
 
   export enum ActionTypes {
     LOADING_START,
@@ -48,6 +55,7 @@ export namespace NMovies {
     MOVIES_FETCH_SUCCESSFUL,
     MOVIE_FETCH_SUCCESSFUL,
     GENRES_FETCH_SUCCESSFUL,
+    AUTHORIZATION_FETCH_SUCCESSFUL,
   }
 
   export interface ILoadingStart {
@@ -78,5 +86,10 @@ export namespace NMovies {
   export interface IGenresFetchSuccessful {
     type: ActionTypes.GENRES_FETCH_SUCCESSFUL;
     payload: Array<IGenre>;
+  }
+
+  export interface IAuthorizationFetchSuccessful {
+    type: ActionTypes.AUTHORIZATION_FETCH_SUCCESSFUL;
+    payload: any;
   }
 }

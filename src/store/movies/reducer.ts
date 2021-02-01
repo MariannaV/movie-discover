@@ -1,14 +1,25 @@
 import produce from "immer";
 import { NMovies } from "./@types";
+import { LS_APP_ID } from "../../consts";
 
-export const initialState: NMovies.IStore = {
-  list: [],
-  map: {},
-  genres: {},
-  loading: null,
-  total_results: null,
-  total_pages: null,
-};
+export const initialState: NMovies.IStore = (() => {
+  const lastSyncData = JSON.parse(localStorage.getItem(LS_APP_ID)!);
+
+  return {
+    list: [],
+    map: {},
+    genres: {},
+    loading: null,
+    total_results: null,
+    total_pages: null,
+    authData: {
+      requestToken: null,
+      sessionId: null,
+      userId: null,
+      ...lastSyncData?.authData,
+    },
+  };
+})();
 
 export const reducer = produce(
   (store: NMovies.IStore, action: NMovies.IActions) => {
@@ -58,6 +69,11 @@ export const reducer = produce(
             },
             { ...store.genres }
           ),
+        };
+      case NMovies.ActionTypes.AUTHORIZATION_FETCH_SUCCESSFUL:
+        return {
+          ...store,
+          authData: action.payload,
         };
     }
 

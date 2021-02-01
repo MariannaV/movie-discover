@@ -5,6 +5,7 @@ import styles from "./index.scss";
 import { Header, sortBy } from "./header/index";
 import { pageSize } from "../../consts";
 import { MoviesList } from "./list/index";
+import { Authorization } from "../../authorization";
 
 export function MoviesPage(): React.ReactElement {
   const { dispatch } = React.useContext(StoreMovies.context);
@@ -92,6 +93,7 @@ export function MoviesPage(): React.ReactElement {
   return (
     <div className={styles.mainWrapper}>
       <h1>Movie Discover</h1>
+      <Authorization />
       <Header
         setSort={setSort}
         setGenresFilters={setGenresFilters}

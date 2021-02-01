@@ -1,3 +1,5 @@
+export const LS_APP_ID = "movie-discover";
+
 export const routes = {
   home: "/",
   card: "/card/:movieId",
