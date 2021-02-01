@@ -1,4 +1,4 @@
-.header {
+.viewSettings {
   display: flex;
   justify-content: space-between;
 }
@@ -23,17 +23,3 @@
 .hiddenBlock {
   display: none;
 }
-
-/*
-[class^="ant-menu ant-menu-light ant-menu-root ant-menu-vertical"] {
-  position: absolute;
-  right: 0;
-  width: 160px;
-  background-color: white;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  border: 1px solId gray;
-}
-*/

@@ -2,10 +2,10 @@ import React from "react";
 import { NMovies, StoreMovies } from "../../store/movies";
 import { MOVIE_API_KEY } from "../../consts";
 import styles from "./index.scss";
-import { Header, sortBy } from "./header/index";
+import { sortBy, ViewSettings } from "./filters/index";
 import { pageSize } from "../../consts";
 import { MoviesList } from "./list/index";
-import { Authorization } from "../../authorization";
+import { Header } from "../../header";
 
 export function MoviesPage(): React.ReactElement {
   const { dispatch } = React.useContext(StoreMovies.context);
@@ -92,9 +92,8 @@ export function MoviesPage(): React.ReactElement {
 
   return (
     <div className={styles.mainWrapper}>
-      <h1>Movie Discover</h1>
-      <Authorization />
-      <Header
+      <Header />
+      <ViewSettings
         setSort={setSort}
         setGenresFilters={setGenresFilters}
         sortBy={sort}

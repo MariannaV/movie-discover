@@ -4,6 +4,7 @@ import { Card, Button, Spin } from "antd";
 import styles from "./index.scss";
 import { NMovies, StoreMovies } from "../../store/movies";
 import { routes } from "../../consts";
+import { Header } from "../../header";
 
 export function MovieCard() {
   const { movieId } = useParams();
@@ -41,6 +42,7 @@ export function MovieCard() {
 
   return (
     <div className={styles.movieCard}>
+      <Header />
       {moviesData.loading || !movie ? (
         <Spin size={"large"} style={{ margin: "auto", display: "block" }} />
       ) : (
