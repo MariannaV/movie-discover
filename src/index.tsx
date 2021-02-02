@@ -1,12 +1,15 @@
 import "antd/dist/antd.css";
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CONSTANTS from "./consts";
 import { StoreMovies } from "./store/movies";
-import { MoviesPage } from "./pages/main";
-import { MovieCard } from "./pages/card";
 import { routes } from "./consts";
+import { Spin } from "antd";
+
+const MovieCard = React.lazy(() => import("./pages/card"));
+const MoviesPage = React.lazy(() => import("./pages/main"));
+console.log("@@", MovieCard);
 
 if (CONSTANTS.isProd && "serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -25,10 +28,12 @@ function App() {
   return (
     <Router>
       <StoreMovies.provider>
-        <Switch>
-          <Route path={routes.card} children={<MovieCard />} />
-          <Route path={routes.home} children={<MoviesPage />} />
-        </Switch>
+        <Suspense fallback={<Spin />}>
+          <Switch>
+            <Route path={routes.card} component={MovieCard} />
+            <Route path={routes.home} component={MoviesPage} />
+          </Switch>
+        </Suspense>
       </StoreMovies.provider>
     </Router>
   );

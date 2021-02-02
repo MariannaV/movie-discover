@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { List } from "antd";
 import { pageSize } from "../../../consts";
 
-export function MoviesList(props: {
+export default function MoviesList(props: {
   moviesList: NMovies.IStore["list"];
   sort_by?: string;
 }): ReactElement {

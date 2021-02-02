@@ -1,13 +1,15 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { NMovies, StoreMovies } from "../../store/movies";
-import { MOVIE_API_KEY } from "../../consts";
+import { MOVIE_API_KEY, pageSize } from "../../consts";
 import styles from "./index.scss";
-import { sortBy, ViewSettings } from "./filters/index";
-import { pageSize } from "../../consts";
-import { MoviesList } from "./list/index";
-import { Header } from "../../header";
+import { sortBy } from "./filters/index";
+import { Spin } from "antd";
 
-export function MoviesPage(): React.ReactElement {
+const MoviesList = React.lazy(() => import("./list/index"));
+const ViewSettings = React.lazy(() => import("./filters/index"));
+const Header = React.lazy(() => import("../../header"));
+
+export default function MoviesPage(): React.ReactElement {
   const { dispatch } = React.useContext(StoreMovies.context);
   const moviesData: any = StoreMovies.useSelector(
     (store: NMovies.IStore) => store
@@ -92,13 +94,21 @@ export function MoviesPage(): React.ReactElement {
 
   return (
     <div className={styles.mainWrapper}>
-      <Header />
-      <ViewSettings
-        setSort={setSort}
-        setGenresFilters={setGenresFilters}
-        sortBy={sort}
+      <Suspense fallback={<Spin />} children={<Header />} />
+      <Suspense
+        fallback={<Spin />}
+        children={
+          <ViewSettings
+            setSort={setSort}
+            setGenresFilters={setGenresFilters}
+            sortBy={sort}
+          />
+        }
       />
-      <MoviesList moviesList={movieIds} sort_by={sort_by} />
+      <Suspense
+        fallback={<Spin />}
+        children={<MoviesList moviesList={movieIds} sort_by={sort_by} />}
+      />
     </div>
   );
 }

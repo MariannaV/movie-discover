@@ -10,7 +10,7 @@ export enum sortBy {
   rating = "rating",
 }
 
-export function ViewSettings(props: {
+export default function ViewSettings(props: {
   sortBy: sortBy;
   setSort: React.Dispatch<sortBy>;
   setGenresFilters: React.Dispatch<Array<NMovies.IGenre["id"]>>;
