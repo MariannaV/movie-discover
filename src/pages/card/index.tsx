@@ -1,12 +1,13 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Card, Button, Spin } from "antd";
 import styles from "./index.scss";
 import { NMovies, StoreMovies } from "../../store/movies";
 import { routes } from "../../consts";
-import { Header } from "../../header";
 
-export function MovieCard() {
+const Header = React.lazy(() => import("../../header"));
+
+export default function MovieCard() {
   const { movieId } = useParams();
   const { dispatch } = React.useContext(StoreMovies.context);
 
@@ -42,7 +43,7 @@ export function MovieCard() {
 
   return (
     <div className={styles.movieCard}>
-      <Header />
+      <Suspense fallback={<Spin />} children={<Header />} />
       {moviesData.loading || !movie ? (
         <Spin size={"large"} style={{ margin: "auto", display: "block" }} />
       ) : (
