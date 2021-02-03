@@ -3,7 +3,7 @@ import { NMovies, StoreMovies } from "../../store/movies";
 import { MOVIE_API_KEY, pageSize } from "../../consts";
 import styles from "./index.scss";
 import { sortBy } from "./filters/index";
-import { Spin } from "antd";
+import { Loader } from "../../components/loader";
 
 const MoviesList = React.lazy(() => import("./list/index"));
 const ViewSettings = React.lazy(() => import("./filters/index"));
@@ -94,9 +94,9 @@ export default function MoviesPage(): React.ReactElement {
 
   return (
     <div className={styles.mainWrapper}>
-      <Suspense fallback={<Spin />} children={<Header />} />
+      <Suspense fallback={<Loader />} children={<Header />} />
       <Suspense
-        fallback={<Spin />}
+        fallback={<Loader />}
         children={
           <ViewSettings
             setSort={setSort}
@@ -106,7 +106,7 @@ export default function MoviesPage(): React.ReactElement {
         }
       />
       <Suspense
-        fallback={<Spin />}
+        fallback={<Loader />}
         children={<MoviesList moviesList={movieIds} sort_by={sort_by} />}
       />
     </div>

@@ -1,9 +1,10 @@
 import React, { Suspense } from "react";
 import { Link, useParams } from "react-router-dom";
-import { Card, Button, Spin } from "antd";
+import { Card, Button } from "antd";
 import styles from "./index.scss";
 import { NMovies, StoreMovies } from "../../store/movies";
 import { routes } from "../../consts";
+import { Loader } from "../../components/loader";
 
 const Header = React.lazy(() => import("../../components/header"));
 
@@ -43,9 +44,9 @@ export default function MovieCard() {
 
   return (
     <div className={styles.movieCard}>
-      <Suspense fallback={<Spin />} children={<Header />} />
+      <Suspense fallback={<Loader />} children={<Header />} />
       {moviesData.loading || !movie ? (
-        <Spin size={"large"} style={{ margin: "auto", display: "block" }} />
+        <Loader />
       ) : (
         <Card
           bordered

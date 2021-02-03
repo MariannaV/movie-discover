@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CONSTANTS from "./consts";
 import { StoreMovies } from "./store/movies";
 import { routes } from "./consts";
-import { Spin } from "antd";
+import { Loader } from "./components/loader";
 
 const MovieCard = React.lazy(() => import("./pages/card"));
 const MoviesPage = React.lazy(() => import("./pages/main"));
@@ -28,7 +28,7 @@ function App() {
   return (
     <Router>
       <StoreMovies.provider>
-        <Suspense fallback={<Spin />}>
+        <Suspense fallback={<Loader />}>
           <Switch>
             <Route path={routes.card} component={MovieCard} />
             <Route path={routes.home} component={MoviesPage} />
