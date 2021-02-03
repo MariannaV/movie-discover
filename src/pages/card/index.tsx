@@ -5,7 +5,7 @@ import styles from "./index.scss";
 import { NMovies, StoreMovies } from "../../store/movies";
 import { routes } from "../../consts";
 
-const Header = React.lazy(() => import("../../header"));
+const Header = React.lazy(() => import("../../components/header"));
 
 export default function MovieCard() {
   const { movieId } = useParams();
