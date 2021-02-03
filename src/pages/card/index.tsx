@@ -8,7 +8,7 @@ import { Loader } from "../../components/loader";
 
 const Header = React.lazy(() => import("../../components/header"));
 
-export default function MovieCard() {
+export default function PageMovieCard() {
   const { movieId } = useParams();
   const { dispatch } = React.useContext(StoreMovies.context);
 

@@ -9,7 +9,7 @@ const MoviesList = React.lazy(() => import("./list/index"));
 const ViewSettings = React.lazy(() => import("./filters/index"));
 const Header = React.lazy(() => import("../../components/header"));
 
-export default function MoviesPage(): React.ReactElement {
+export default function PageMovies(): React.ReactElement {
   const { dispatch } = React.useContext(StoreMovies.context);
   const moviesData: any = StoreMovies.useSelector(
     (store: NMovies.IStore) => store
