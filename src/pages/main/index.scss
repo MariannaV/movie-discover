@@ -1,11 +1,14 @@
+@import "../../styles/variables";
+
 .mainWrapper {
   max-width: 80vw;
-  margin: 20px auto;
+  margin: calc(var(--headerHeight) + 20px) auto 20px auto;
 }
 
 [class="ant-list-item"] {
   border: 1px solid gray;
   border-radius: 3px;
+  background-color: $colorGray;
 }
 
 img {

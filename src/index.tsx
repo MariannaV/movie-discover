@@ -1,4 +1,5 @@
 import "antd/dist/antd.css";
+import "./styles/index.scss";
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";

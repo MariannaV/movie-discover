@@ -1,0 +1,18 @@
+body {
+  --headerHeight: 60px;
+  font-family: "Sora", sans-serif;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("assets/img/movie-background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}

@@ -1,5 +1,19 @@
+@import "../../styles/variables.scss";
+
 .header {
+  position: fixed;
+  top: 0;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
+  padding: 5px calc((100% - 80vw) / 2);
+  z-index: 3;
+  background-color: $colorGray;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+.headerTitle {
+  @media (--max-desktop) {
+    font-size: 1.5rem;
+  }
 }

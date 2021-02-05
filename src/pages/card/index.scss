@@ -1,25 +1,28 @@
+@import "../../styles/variables.scss";
+
 .movieCard {
   max-width: 80vw;
-  margin: 20px auto;
+  margin: calc(var(--headerHeight) + 20px) auto 20px auto;
 }
 
 [class="ant-card ant-card-bordered"] {
   max-width: 80vw;
-  margin: 40px auto;
+  margin: 0 auto;
   padding: 20px;
-  @media (min-width: 1024px) {
+  background-color: $colorGray;
+  @media (--min-desktop) {
     display: flex;
     justify-content: space-around;
   }
 }
 [class="ant-card-cover"] {
-  @media (max-width: 1023px) {
+  @media (--max-desktop) {
     max-width: 300px;
     margin: 0 auto;
   }
 }
 [class="ant-card-body"] {
-  @media (min-width: 1024px) {
+  @media (--min-desktop) {
     width: 50%;
   }
 }
