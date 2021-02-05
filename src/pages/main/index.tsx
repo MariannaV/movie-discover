@@ -7,7 +7,6 @@ import { Loader } from "../../components/loader";
 
 const MoviesList = React.lazy(() => import("./list/index"));
 const ViewSettings = React.lazy(() => import("./filters/index"));
-const Header = React.lazy(() => import("../../components/header"));
 
 export default function PageMovies(): React.ReactElement {
   const { dispatch } = React.useContext(StoreMovies.context);
@@ -94,7 +93,6 @@ export default function PageMovies(): React.ReactElement {
 
   return (
     <div className={styles.mainWrapper}>
-      <Suspense fallback={<Loader />} children={<Header />} />
       <Suspense
         fallback={<Loader />}
         children={

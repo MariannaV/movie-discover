@@ -6,6 +6,7 @@ import CONSTANTS from "./consts";
 import { StoreMovies } from "./store/movies";
 import { routes } from "./consts";
 import { Loader } from "./components/loader";
+import { Header } from "./components/header";
 
 const PageMovieCard = React.lazy(() => import("./pages/card"));
 const PageMovies = React.lazy(() => import("./pages/main"));
@@ -25,16 +26,19 @@ if (CONSTANTS.isProd && "serviceWorker" in navigator) {
 
 function App() {
   return (
-    <Router>
+    <>
       <StoreMovies.provider>
-        <Suspense fallback={<Loader />}>
-          <Switch>
-            <Route path={routes.card} component={PageMovieCard} />
-            <Route path={routes.home} component={PageMovies} />
-          </Switch>
-        </Suspense>
+        <Header />
+        <Router>
+          <Suspense fallback={<Loader />}>
+            <Switch>
+              <Route path={routes.card} component={PageMovieCard} />
+              <Route path={routes.home} component={PageMovies} />
+            </Switch>
+          </Suspense>
+        </Router>
       </StoreMovies.provider>
-    </Router>
+    </>
   );
 }
 

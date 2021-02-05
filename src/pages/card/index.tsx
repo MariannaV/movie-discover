@@ -6,8 +6,6 @@ import { NMovies, StoreMovies } from "../../store/movies";
 import { routes } from "../../consts";
 import { Loader } from "../../components/loader";
 
-const Header = React.lazy(() => import("../../components/header"));
-
 export default function PageMovieCard() {
   const { movieId } = useParams();
   const { dispatch } = React.useContext(StoreMovies.context);
@@ -44,7 +42,6 @@ export default function PageMovieCard() {
 
   return (
     <div className={styles.movieCard}>
-      <Suspense fallback={<Loader />} children={<Header />} />
       {moviesData.loading || !movie ? (
         <Loader />
       ) : (
