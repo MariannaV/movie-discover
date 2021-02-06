@@ -1,15 +1,16 @@
 import "antd/dist/antd.css";
+import "./styles/index.scss";
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import CONSTANTS from "./consts";
 import { StoreMovies } from "./store/movies";
 import { routes } from "./consts";
-import { Spin } from "antd";
+import { Loader } from "./components/loader";
+import { Header } from "./components/header";
 
-const MovieCard = React.lazy(() => import("./pages/card"));
-const MoviesPage = React.lazy(() => import("./pages/main"));
-console.log("@@", MovieCard);
+const PageMovieCard = React.lazy(() => import("./pages/card"));
+const PageMovies = React.lazy(() => import("./pages/main"));
 
 if (CONSTANTS.isProd && "serviceWorker" in navigator) {
   window.addEventListener("load", () => {
@@ -26,16 +27,19 @@ if (CONSTANTS.isProd && "serviceWorker" in navigator) {
 
 function App() {
   return (
-    <Router>
+    <>
       <StoreMovies.provider>
-        <Suspense fallback={<Spin />}>
-          <Switch>
-            <Route path={routes.card} component={MovieCard} />
-            <Route path={routes.home} component={MoviesPage} />
-          </Switch>
-        </Suspense>
+        <Header />
+        <Router>
+          <Suspense fallback={<Loader />}>
+            <Switch>
+              <Route path={routes.card} component={PageMovieCard} />
+              <Route path={routes.home} component={PageMovies} />
+            </Switch>
+          </Suspense>
+        </Router>
       </StoreMovies.provider>
-    </Router>
+    </>
   );
 }
 

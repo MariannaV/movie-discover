@@ -1,6 +1,6 @@
 import React from "react";
-import { NMovies, StoreMovies } from "../store/movies";
-import { MOVIE_API_KEY } from "../consts";
+import { NMovies, StoreMovies } from "../../store/movies";
+import { MOVIE_API_KEY } from "../../consts";
 import { Button, Modal } from "antd";
 
 enum AuthSteps {

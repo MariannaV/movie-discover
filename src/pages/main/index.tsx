@@ -3,13 +3,12 @@ import { NMovies, StoreMovies } from "../../store/movies";
 import { MOVIE_API_KEY, pageSize } from "../../consts";
 import styles from "./index.scss";
 import { sortBy } from "./filters/index";
-import { Spin } from "antd";
+import { Loader } from "../../components/loader";
 
 const MoviesList = React.lazy(() => import("./list/index"));
 const ViewSettings = React.lazy(() => import("./filters/index"));
-const Header = React.lazy(() => import("../../header"));
 
-export default function MoviesPage(): React.ReactElement {
+export default function PageMovies(): React.ReactElement {
   const { dispatch } = React.useContext(StoreMovies.context);
   const moviesData: any = StoreMovies.useSelector(
     (store: NMovies.IStore) => store
@@ -94,9 +93,8 @@ export default function MoviesPage(): React.ReactElement {
 
   return (
     <div className={styles.mainWrapper}>
-      <Suspense fallback={<Spin />} children={<Header />} />
       <Suspense
-        fallback={<Spin />}
+        fallback={<Loader />}
         children={
           <ViewSettings
             setSort={setSort}
@@ -106,7 +104,7 @@ export default function MoviesPage(): React.ReactElement {
         }
       />
       <Suspense
-        fallback={<Spin />}
+        fallback={<Loader />}
         children={<MoviesList moviesList={movieIds} sort_by={sort_by} />}
       />
     </div>

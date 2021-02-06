@@ -1,4 +1,6 @@
+$colorGray: #fefefedb;
+
 $desktop: 1024px;
 
-@custom-media --min-tablet (width >= $tablet);
-@custom-media --max-tablet (width < $tablet);
+@custom-media --min-desktop (width >= $desktop);
+@custom-media --max-desktop (width < $desktop);
